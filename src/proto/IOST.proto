@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package TW.IOST.Proto;
+option java_package = "com.wallet.crypto.trustapp.proto";
+
+// The message defines transaction action struct.
+message Action {
+    // contract name
+    string contract = 1;
+    // action name
+    string action_name = 2;
+    // data
+    string data = 3;
+}
+
+
+// The message defines transaction amount limit struct.
+message AmountLimit {
+    // token name
+    string token = 1;
+    // limit value
+    string value = 2;
+}
+
+// The message defines signature struct.
+message Signature {
+    // The enumeration defines the signature algorithm.
+    enum Algorithm {
+        // unknown
+        UNKNOWN = 0;
+        // secp256k1
+        SECP256K1 = 1;
+        // ed25519
+        ED25519 = 2;
+    }
+
+    // signature algorithm
+    Algorithm algorithm = 1;
+    // signature bytes
+    bytes signature = 2;
+    // public key
+    bytes public_key = 3;
+}
+
+// The message defines the transaction request.
+message TransactionRequest {
+    // transaction timestamp
+    int64 time = 1;
+    // expiration timestamp
+    int64 expiration = 2;
+    // gas price
+    double gas_ratio = 3;
+    // gas limit
+    double gas_limit = 4;
+    // delay nanoseconds
+    int64 delay = 5;
+    // chain id
+    uint32 chain_id = 6;
+    // action list
+    repeated Action actions = 7;
+    // amount limit
+    repeated AmountLimit amount_limit = 8;
+    // signer list
+    repeated string signers = 9;
+    // signatures of signers
+    repeated Signature signatures = 10;
+    // publisher
+    string publisher = 11;
+    // signatures of publisher
+    repeated Signature publisher_sigs = 12;
+}
