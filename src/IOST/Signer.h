@@ -7,13 +7,13 @@
 #pragma once
 
 #include "../proto/IOST.pb.h"
-#include <TrustWalletCore/TWData.h>
+#include "../PrivateKey.h"
 
 namespace TW {
 namespace IOST {
 class Signer {
 public:
-    TWData *_Nonnull sign(Proto::TransactionRequest tx, TWData *_Nonnull key) const;
+    void sign(const PrivateKey& privateKey, Proto::Transaction& transaction) const noexcept;
 };
 
 }} // namespace

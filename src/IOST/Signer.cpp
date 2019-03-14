@@ -46,10 +46,9 @@ private:
     std::stringstream buffer;
 };
 
-TWData *_Nonnull Signer::sign(Proto::TransactionRequest t, TWData *_Nonnull keyStr) const {
+void Signer::sign(const PrivateKey& privateKey, Proto::Transaction& t) const noexcept {
     IOSTEncoder se;
 	se.WriteInt64(t.time());
-    std::cout << "t.time" << t.time() << std::endl;
 	se.WriteInt64(t.expiration());
 	se.WriteInt64(int64_t(t.gas_ratio() * 100));
 	se.WriteInt64(int64_t(t.gas_limit() * 100));
@@ -62,7 +61,6 @@ TWData *_Nonnull Signer::sign(Proto::TransactionRequest t, TWData *_Nonnull keyS
         svec.push_back(item);
     }
 	se.WriteStringSlice(svec);
-
     se.WriteInt32(t.actions_size());
     for (auto a : t.actions()) {
         IOSTEncoder s;
@@ -90,19 +88,14 @@ TWData *_Nonnull Signer::sign(Proto::TransactionRequest t, TWData *_Nonnull keyS
     }
 
     std::string txRaw = se.AsString();
-
-    std::cout << "txRaw size" << txRaw.size() << std::endl;
-    for (char c : txRaw) {
-        std::cout << (uint32_t)(uint8_t)c << " ";
-    }
-
-    //auto hash = Hash::sha256(txRaw);
-    auto keyVec = *(reinterpret_cast<const std::vector<uint8_t>*>(keyStr));
-    std::cout << "keyVec " << keyVec.size() << std::endl;
-    auto key = PrivateKey(keyVec);
     auto hash = Hash::sha3_256(txRaw);
-    auto signature = key.sign(hash);
-    //TWData *_Nonnull
-    //auto sig = std::vector<uint8_t>(signature.begin(), signature.end() - 1);
-    return TWDataCreateWithBytes(signature.begin(), signature.size() - 1U);
+    t.add_signatures();
+    auto sig = t.mutable_signatures(0);
+    sig->set_algorithm(Proto::Signature_Algorithm_SECP256K1);
+    auto pubkey = privateKey.getPublicKey(PublicKeyType::secp256k1).bytes;
+    std::string pubkeyStr(pubkey.begin(), pubkey.end() - 1);
+    sig->set_public_key(pubkeyStr);
+    auto signature = privateKey.sign(hash, TWCurveSECP256k1);
+    std::string signatureStr(signature.begin(), signature.end() - 1);
+    sig->set_signature(signatureStr);
 }

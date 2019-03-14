@@ -128,7 +128,7 @@ extension TW_IOST_Proto_Signature.Algorithm: CaseIterable {
 #endif  // swift(>=4.2)
 
 /// The message defines the transaction request.
-public struct TW_IOST_Proto_TransactionRequest {
+public struct TW_IOST_Proto_Transaction {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
   // methods supported on all messages.
@@ -303,8 +303,8 @@ extension TW_IOST_Proto_Signature.Algorithm: SwiftProtobuf._ProtoNameProviding {
   ]
 }
 
-extension TW_IOST_Proto_TransactionRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".TransactionRequest"
+extension TW_IOST_Proto_Transaction: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = _protobuf_package + ".Transaction"
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "time"),
     2: .same(proto: "expiration"),
@@ -380,7 +380,7 @@ extension TW_IOST_Proto_TransactionRequest: SwiftProtobuf.Message, SwiftProtobuf
     try unknownFields.traverse(visitor: &visitor)
   }
 
-  public static func ==(lhs: TW_IOST_Proto_TransactionRequest, rhs: TW_IOST_Proto_TransactionRequest) -> Bool {
+  public static func ==(lhs: TW_IOST_Proto_Transaction, rhs: TW_IOST_Proto_Transaction) -> Bool {
     if lhs.time != rhs.time {return false}
     if lhs.expiration != rhs.expiration {return false}
     if lhs.gasRatio != rhs.gasRatio {return false}

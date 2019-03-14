@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package TW.IOST.Proto;
-option java_package = "com.wallet.crypto.trustapp.proto";
+option java_package = "wallet.core.jni.proto";
 
 // The message defines transaction action struct.
 message Action {
@@ -43,7 +43,7 @@ message Signature {
 }
 
 // The message defines the transaction request.
-message TransactionRequest {
+message Transaction {
     // transaction timestamp
     int64 time = 1;
     // expiration timestamp
