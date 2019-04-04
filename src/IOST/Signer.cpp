@@ -2,8 +2,8 @@
 #include "Signer.h"
 #include "../Hash.h"
 #include "../PrivateKey.h"
-#include <sstream>
 #include <boost/endian/conversion.hpp>
+#include <sstream>
 
 #include <iostream>
 
@@ -11,11 +11,9 @@ using namespace TW;
 using namespace TW::IOST;
 
 class IOSTEncoder {
-public:    
-    IOSTEncoder(){}
-    void WriteByte(uint8_t b) {
-        buffer << b;
-    }
+  public:
+    IOSTEncoder() {}
+    void WriteByte(uint8_t b) { buffer << b; }
     void WriteInt32(uint32_t i) {
         uint32_t r = boost::endian::endian_reverse(i);
         buffer << std::string(reinterpret_cast<const char*>(&r), sizeof(r));
@@ -38,29 +36,27 @@ public:
         }
     }
 
-    std::string AsString() {
-        return buffer.str();
-    }
+    std::string AsString() { return buffer.str(); }
 
-private:
+  private:
     std::stringstream buffer;
 };
 
 void Signer::sign(const PrivateKey& privateKey, Proto::Transaction& t) const noexcept {
     IOSTEncoder se;
-	se.WriteInt64(t.time());
-	se.WriteInt64(t.expiration());
-	se.WriteInt64(int64_t(t.gas_ratio() * 100));
-	se.WriteInt64(int64_t(t.gas_limit() * 100));
-	se.WriteInt64(t.delay());
-	se.WriteInt32(int32_t(t.chain_id()));
-	se.WriteString("");
+    se.WriteInt64(t.time());
+    se.WriteInt64(t.expiration());
+    se.WriteInt64(int64_t(t.gas_ratio() * 100));
+    se.WriteInt64(int64_t(t.gas_limit() * 100));
+    se.WriteInt64(t.delay());
+    se.WriteInt32(int32_t(t.chain_id()));
+    se.WriteString("");
 
     std::vector<std::string> svec;
     for (auto item : t.signers()) {
         svec.push_back(item);
     }
-	se.WriteStringSlice(svec);
+    se.WriteStringSlice(svec);
     se.WriteInt32(t.actions_size());
     for (auto a : t.actions()) {
         IOSTEncoder s;
@@ -89,8 +85,8 @@ void Signer::sign(const PrivateKey& privateKey, Proto::Transaction& t) const noe
 
     std::string txRaw = se.AsString();
     auto hash = Hash::sha3_256(txRaw);
-    t.add_signatures();
-    auto sig = t.mutable_signatures(0);
+    t.add_publisher_sigs();
+    auto sig = t.mutable_publisher_sigs(0);
     sig->set_algorithm(Proto::Signature_Algorithm_SECP256K1);
     auto pubkey = privateKey.getPublicKey(PublicKeyType::secp256k1).bytes;
     std::string pubkeyStr(pubkey.begin(), pubkey.end() - 1);

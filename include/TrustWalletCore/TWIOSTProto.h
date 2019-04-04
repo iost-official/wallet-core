@@ -8,7 +8,9 @@
 
 #include "TWData.h"
 
-typedef TWData *_Nonnull TW_IOST_Proto_Action;
-typedef TWData *_Nonnull TW_IOST_Proto_AmountLimit;
-typedef TWData *_Nonnull TW_IOST_Proto_Signature;
-typedef TWData *_Nonnull TW_IOST_Proto_Transaction;
+typedef TWData* _Nonnull TW_IOST_Proto_Action;
+typedef TWData* _Nonnull TW_IOST_Proto_AmountLimit;
+typedef TWData* _Nonnull TW_IOST_Proto_Signature;
+typedef TWData* _Nonnull TW_IOST_Proto_Transaction;
+typedef TWData* _Nonnull TW_IOST_Proto_SigningInput;
+typedef TWData* _Nonnull TW_IOST_Proto_SigningOutput;

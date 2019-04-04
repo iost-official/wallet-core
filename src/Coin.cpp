@@ -13,6 +13,7 @@
 #include "Decred/Address.h"
 #include "Ethereum/Address.h"
 #include "Groestlcoin/Address.h"
+#include "IOST/Address.h"
 #include "Icon/Address.h"
 #include "NEO/Address.h"
 #include "Nimiq/Address.h"
@@ -62,7 +63,8 @@ bool TW::validateAddress(TWCoinType coin, const std::string& string) {
 
     case TWCoinTypeGroestlcoin:
         return Bitcoin::Bech32Address::isValid(string, HRP_GROESTLCOIN) ||
-               Groestlcoin::Address::isValid(string, {TWP2PKHPrefixGroestlcoin, TWP2SHPrefixGroestlcoin});
+               Groestlcoin::Address::isValid(string,
+                                             {TWP2PKHPrefixGroestlcoin, TWP2SHPrefixGroestlcoin});
 
     case TWCoinTypeCallisto:
     case TWCoinTypeEthereum:
@@ -79,6 +81,8 @@ bool TW::validateAddress(TWCoinType coin, const std::string& string) {
         return Wanchain::Address::isValid(string);
     case TWCoinTypeICON:
         return Icon::Address::isValid(string);
+    case TWCoinTypeIOST:
+        return IOST::Address::isValid(string);
 
     case TWCoinTypeLitecoin:
         return Bitcoin::Bech32Address::isValid(string, HRP_LITECOIN) ||
@@ -165,6 +169,7 @@ TWCurve TW::curve(TWCoinType coin) {
     case TWCoinTypeGo:
     case TWCoinTypeGroestlcoin:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeLitecoin:
     case TWCoinTypePoa:
     case TWCoinTypeRipple:
@@ -219,6 +224,7 @@ TWHDVersion TW::xpubVersion(TWCoinType coin) {
     case TWCoinTypeEthereumClassic:
     case TWCoinTypeGo:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeNimiq:
     case TWCoinTypeOntology:
     case TWCoinTypePoa:
@@ -261,6 +267,7 @@ TWHDVersion TW::xprvVersion(TWCoinType coin) {
     case TWCoinTypeEthereumClassic:
     case TWCoinTypeGo:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeNimiq:
     case TWCoinTypeOntology:
     case TWCoinTypePoa:
@@ -328,11 +335,8 @@ DerivationPath TW::derivationPath(TWCoinType coin) {
 
     case TWCoinTypeStellar:
     case TWCoinTypeKIN:
-        return DerivationPath{
-            DerivationPathIndex(purpose(coin), true),
-            DerivationPathIndex(coin, true),
-            DerivationPathIndex(0, true)
-        };
+        return DerivationPath{DerivationPathIndex(purpose(coin), true),
+                              DerivationPathIndex(coin, true), DerivationPathIndex(0, true)};
     }
 }
 
@@ -345,6 +349,7 @@ PublicKeyType TW::publicKeyType(TWCoinType coin) {
     case TWCoinTypeDash:
     case TWCoinTypeDecred:
     case TWCoinTypeGroestlcoin:
+    case TWCoinTypeIOST:
     case TWCoinTypeLitecoin:
     case TWCoinTypeZcash:
     case TWCoinTypeZcoin:

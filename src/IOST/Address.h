@@ -15,31 +15,32 @@ namespace TW {
 namespace IOST {
 
 class Address {
-public:
-    template<typename T>
+  public:
+    template <typename T>
     static bool isValid(const T& data) {
         auto s = std::string(data);
-        if s.size() < 5 || s.size() > 11 {
-            return false;
-        }
+        if (s.size()<5 || s.size()> 11) { return false; }
         for (char ch : s) {
-            if (!(ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9' || ch === '_')) {
+            if (!(ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9' || ch == = '_')) {
                 return false;
             }
         }
         return true;
     }
-    Address(const std::string& string) {
-        data = string;
-    }
-    //Address(const PublicKey& publicKey) {
-    //
-    //}
-    std::string string() const {
-        return data;
-    }
-private:
+    Address(const std::string& string) { data = string; }
+    Address(const PublicKey& publicKey) {}
+    std::string string() const { return data; }
     std::string data;
 };
 
-}}
+inline bool operator==(const Address& lhs, const Address& rhs) {
+    return lhs.data == rhs.data;
+}
+
+} // namespace IOST
+} // namespace TW
+
+/// Wrapper for C interface.
+struct TWIOSTAddress {
+    TW::IOST::Address impl;
+};

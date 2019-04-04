@@ -13,7 +13,6 @@ message Action {
     string data = 3;
 }
 
-
 // The message defines transaction amount limit struct.
 message AmountLimit {
     // token name
@@ -68,4 +67,16 @@ message Transaction {
     string publisher = 11;
     // signatures of publisher
     repeated Signature publisher_sigs = 12;
+}
+
+// Input data necessary to create a signed transaction.
+message SigningInput {
+    bytes private_key = 1;
+    Transaction transaction = 2;
+}
+
+// Transaction signing output.
+message SigningOutput {
+    // Signed and encoded transaction bytes.
+    string signature = 1;
 }
