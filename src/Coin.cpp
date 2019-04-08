@@ -131,6 +131,7 @@ TWPurpose TW::purpose(TWCoinType coin) {
     case TWCoinTypeEthereumClassic:
     case TWCoinTypeGo:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeNimiq:
     case TWCoinTypeOntology:
     case TWCoinTypePoa:
@@ -301,6 +302,7 @@ DerivationPath TW::derivationPath(TWCoinType coin) {
     case TWCoinTypeGo:
     case TWCoinTypeGroestlcoin:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeLitecoin:
     case TWCoinTypeOntology:
     case TWCoinTypePoa:
@@ -426,6 +428,9 @@ std::string TW::deriveAddress(TWCoinType coin, const PublicKey& publicKey) {
         return Wanchain::Address(publicKey).string();
     case TWCoinTypeICON:
         return Icon::Address(publicKey, TWIconAddressTypeAddress).string();
+    case TWCoinTypeIOST:
+        // public key cannot derive address in IOST
+        return "";
 
     case TWCoinTypeLitecoin:
         return Bitcoin::Bech32Address(publicKey, 0, HRP_LITECOIN).string();
@@ -475,6 +480,7 @@ Hash::Hasher TW::publicKeyHasher(TWCoinType coin) {
     case TWCoinTypeGo:
     case TWCoinTypeGroestlcoin:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeKIN:
     case TWCoinTypeLitecoin:
     case TWCoinTypeNEO:
@@ -514,6 +520,7 @@ Hash::Hasher TW::base58Hasher(TWCoinType coin) {
     case TWCoinTypeEthereumClassic:
     case TWCoinTypeGo:
     case TWCoinTypeICON:
+    case TWCoinTypeIOST:
     case TWCoinTypeKIN:
     case TWCoinTypeLitecoin:
     case TWCoinTypeNEO:

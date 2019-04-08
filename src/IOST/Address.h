@@ -21,7 +21,7 @@ class Address {
         auto s = std::string(data);
         if (s.size()<5 || s.size()> 11) { return false; }
         for (char ch : s) {
-            if (!(ch >= 'a' && ch <= 'z' || ch >= '0' && ch <= '9' || ch == = '_')) {
+            if (!((ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') || ch == '_')) {
                 return false;
             }
         }

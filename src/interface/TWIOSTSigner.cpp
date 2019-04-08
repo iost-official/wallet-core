@@ -4,6 +4,7 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
+#include <TrustWalletCore/TWData.h>
 #include <TrustWalletCore/TWIOSTSigner.h>
 
 #include "Base58.h"
@@ -23,7 +24,9 @@ TW_IOST_Proto_SigningOutput TWIconSignerSign(TW_IOST_Proto_SigningInput data) {
     signer.sign(key, transaction);
 
     auto protoOutput = Proto::SigningOutput();
-    auto encoded = Base58::bitcoin.encode(transaction.publisher_sigs(0).signature());
+    std::string sig = transaction.publisher_sigs(0).signature();
+    auto ptr = reinterpret_cast<byte*>(sig.data());
+    auto encoded = Base58::bitcoin.encode(ptr, ptr + sig.size());
     protoOutput.set_signature(encoded.data(), encoded.size());
 
     auto serialized = protoOutput.SerializeAsString();
