@@ -14,7 +14,7 @@
 using namespace TW;
 using namespace TW::IOST;
 
-TW_IOST_Proto_SigningOutput TWIconSignerSign(TW_IOST_Proto_SigningInput data) {
+TW_IOST_Proto_SigningOutput TWIOSTSignerSign(TW_IOST_Proto_SigningInput data) {
     Proto::SigningInput input;
     input.ParseFromArray(TWDataBytes(data), TWDataSize(data));
 
