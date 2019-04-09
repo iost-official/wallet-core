@@ -59,6 +59,8 @@ public extension CoinType {
             return DecredAddress(string: string)
         case .groestlcoin:
             return GroestlcoinAddress(string: string)
+        case .iost:
+            return IOSTAddress(string: string)
         }
         return .none
     }
